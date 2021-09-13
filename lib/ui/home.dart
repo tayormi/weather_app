@@ -10,6 +10,16 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Weather'),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Icon(Icons.settings),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Icon(Icons.search),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   '20',
-                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(
@@ -97,14 +107,20 @@ class WeatherItem extends StatelessWidget {
     return Container(
       // height: 100,
       width: 120,
-      color: Colors.greenAccent[100],
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(5)),
+
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Text(
               'FRI',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
             ),
             SizedBox(
               height: 10,
@@ -122,7 +138,10 @@ class WeatherItem extends StatelessWidget {
             ),
             Text(
               '14/21',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
             ),
           ],
         ),
