@@ -6,23 +6,40 @@ part of 'weather.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Weather _$WeatherFromJson(Map<String, dynamic> json) {
-  return $checkedNew('Weather', json, () {
-    final val = Weather(
-      location: $checkedConvert(json, 'location', (v) => v as String),
-      temperature:
-          $checkedConvert(json, 'temperature', (v) => (v as num).toDouble()),
-      condition: $checkedConvert(
-          json, 'condition', (v) => _$enumDecode(_$WeatherConditionEnumMap, v)),
+Temperature _$TemperatureFromJson(Map<String, dynamic> json) {
+  return $checkedNew('Temperature', json, () {
+    final val = Temperature(
+      value: $checkedConvert(json, 'value', (v) => (v as num).toDouble()),
     );
     return val;
   });
 }
 
+Map<String, dynamic> _$TemperatureToJson(Temperature instance) =>
+    <String, dynamic>{
+      'value': instance.value,
+    };
+
+Weather _$WeatherFromJson(Map<String, dynamic> json) {
+  return $checkedNew('Weather', json, () {
+    final val = Weather(
+      condition: $checkedConvert(
+          json, 'condition', (v) => _$enumDecode(_$WeatherConditionEnumMap, v)),
+      lastUpdated: $checkedConvert(
+          json, 'last_updated', (v) => DateTime.parse(v as String)),
+      location: $checkedConvert(json, 'location', (v) => v as String),
+      temperature: $checkedConvert(json, 'temperature',
+          (v) => Temperature.fromJson(v as Map<String, dynamic>)),
+    );
+    return val;
+  }, fieldKeyMap: const {'lastUpdated': 'last_updated'});
+}
+
 Map<String, dynamic> _$WeatherToJson(Weather instance) => <String, dynamic>{
-      'location': instance.location,
-      'temperature': instance.temperature,
       'condition': _$WeatherConditionEnumMap[instance.condition],
+      'last_updated': instance.lastUpdated.toIso8601String(),
+      'location': instance.location,
+      'temperature': instance.temperature.toJson(),
     };
 
 K _$enumDecode<K, V>(

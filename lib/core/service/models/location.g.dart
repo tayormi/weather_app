@@ -7,17 +7,25 @@ part of 'location.dart';
 // **************************************************************************
 
 Location _$LocationFromJson(Map<String, dynamic> json) {
-  return Location(
-    title: json['title'] as String,
-    locationType: _$enumDecode(_$LocationTypeEnumMap, json['locationType']),
-    latLng: const LatLngConverter().fromJson(json['latt_long'] as String),
-    woeid: json['woeid'] as int,
-  );
+  return $checkedNew('Location', json, () {
+    final val = Location(
+      title: $checkedConvert(json, 'title', (v) => v as String),
+      locationType: $checkedConvert(
+          json, 'location_type', (v) => _$enumDecode(_$LocationTypeEnumMap, v)),
+      latLng: $checkedConvert(json, 'latt_long',
+          (v) => const LatLngConverter().fromJson(v as String)),
+      woeid: $checkedConvert(json, 'woeid', (v) => v as int),
+    );
+    return val;
+  }, fieldKeyMap: const {
+    'locationType': 'location_type',
+    'latLng': 'latt_long'
+  });
 }
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'title': instance.title,
-      'locationType': _$LocationTypeEnumMap[instance.locationType],
+      'location_type': _$LocationTypeEnumMap[instance.locationType],
       'latt_long': const LatLngConverter().toJson(instance.latLng),
       'woeid': instance.woeid,
     };
