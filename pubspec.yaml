@@ -29,6 +29,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   dio: ^4.0.0
+  equatable: ^2.0.3
   flex_color_scheme: ^3.0.1
   flutter:
     sdk: flutter
@@ -36,8 +37,8 @@ dependencies:
   json_annotation: ^4.0.0
 
 dev_dependencies:
-  flutter_lints: ^1.0.0
   build_runner: ^1.10.0
+  flutter_lints: ^1.0.0
   json_serializable: ^4.0.0
   mocktail: ^0.1.0
   test: ^1.16.4
