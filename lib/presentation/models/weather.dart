@@ -63,8 +63,8 @@ class Weather extends Equatable {
       location: '--',
       airPressure: 0,
       humidity: 0,
-      maxTemp: 0,
-      minTemp: 0,
+      maxTemp: const Temperature(value: 0),
+      minTemp: const Temperature(value: 0),
       weatherStateAbr: '',
       windDirection: 0,
       windSpeed: 0,
@@ -75,8 +75,8 @@ class Weather extends Equatable {
   final String location;
   final Temperature temperature;
   final String weatherStateAbr;
-  final double minTemp;
-  final double maxTemp;
+  final Temperature minTemp;
+  final Temperature maxTemp;
   final double windSpeed;
   final double windDirection;
   final int humidity;
@@ -94,8 +94,8 @@ class Weather extends Equatable {
       String? location,
       Temperature? temperature,
       String? weatherStateAbr,
-      double? minTemp,
-      double? maxTemp,
+      Temperature? minTemp,
+      Temperature? maxTemp,
       double? windSpeed,
       double? windDirection,
       int? humidity,

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/presentation/city_search.dart';
 import 'package:weather_app/presentation/providers/weather_provider.dart';
 import 'package:weather_app/presentation/providers/weather_state.dart';
+import 'package:weather_app/presentation/ui/setting_screen.dart';
 import 'package:weather_app/presentation/ui/widgets/weather_available.dart';
 
 import 'widgets/weather_empty.dart';
@@ -19,9 +20,12 @@ class HomeScreen extends HookConsumerWidget {
           centerTitle: true,
           title: const Text('Weather'),
           actions: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: Icon(Icons.settings),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: InkWell(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const SettingsScreen())),
+                  child: const Icon(Icons.settings)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),

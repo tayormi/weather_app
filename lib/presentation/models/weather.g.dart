@@ -31,8 +31,10 @@ Weather _$WeatherFromJson(Map<String, dynamic> json) {
           (v) => Temperature.fromJson(v as Map<String, dynamic>)),
       weatherStateAbr:
           $checkedConvert(json, 'weather_state_abr', (v) => v as String),
-      minTemp: $checkedConvert(json, 'min_temp', (v) => (v as num).toDouble()),
-      maxTemp: $checkedConvert(json, 'max_temp', (v) => (v as num).toDouble()),
+      minTemp: $checkedConvert(json, 'min_temp',
+          (v) => Temperature.fromJson(v as Map<String, dynamic>)),
+      maxTemp: $checkedConvert(json, 'max_temp',
+          (v) => Temperature.fromJson(v as Map<String, dynamic>)),
       windSpeed:
           $checkedConvert(json, 'wind_speed', (v) => (v as num).toDouble()),
       windDirection:
@@ -60,8 +62,8 @@ Map<String, dynamic> _$WeatherToJson(Weather instance) => <String, dynamic>{
       'location': instance.location,
       'temperature': instance.temperature.toJson(),
       'weather_state_abr': instance.weatherStateAbr,
-      'min_temp': instance.minTemp,
-      'max_temp': instance.maxTemp,
+      'min_temp': instance.minTemp.toJson(),
+      'max_temp': instance.maxTemp.toJson(),
       'wind_speed': instance.windSpeed,
       'wind_direction': instance.windDirection,
       'humidity': instance.humidity,

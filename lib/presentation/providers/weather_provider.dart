@@ -33,6 +33,7 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
         final value = units.isFahrenheit
             ? item.temperature.toFahrenheit()
             : item.temperature;
+
         weatherList.add(Weather(
             condition: item.condition,
             location: item.location,
@@ -40,8 +41,14 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
             lastUpdated: DateTime.now(),
             airPressure: item.airPressure,
             humidity: item.humidity,
-            maxTemp: item.maxTemp,
-            minTemp: item.minTemp,
+            maxTemp: Temperature(
+                value: units.isFahrenheit
+                    ? item.maxTemp.toFahrenheit()
+                    : item.maxTemp),
+            minTemp: Temperature(
+                value: units.isFahrenheit
+                    ? item.minTemp.toFahrenheit()
+                    : item.minTemp),
             weatherStateAbr: item.weatherStateAbr,
             windDirection: item.windDirection,
             date: item.applicableDate,
@@ -82,8 +89,14 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
             lastUpdated: DateTime.now(),
             airPressure: item.airPressure,
             humidity: item.humidity,
-            maxTemp: item.maxTemp,
-            minTemp: item.minTemp,
+            maxTemp: Temperature(
+                value: units.isFahrenheit
+                    ? item.maxTemp.toFahrenheit()
+                    : item.maxTemp),
+            minTemp: Temperature(
+                value: units.isFahrenheit
+                    ? item.minTemp.toFahrenheit()
+                    : item.minTemp),
             weatherStateAbr: item.weatherStateAbr,
             windDirection: item.windDirection,
             date: item.applicableDate,
@@ -115,9 +128,17 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
     if (weather.isNotEmpty) {
       for (var item in weather) {
         final temperature = item.temperature;
+        final maxTemp = item.maxTemp;
+        final minTemp = item.minTemp;
         final value = units.isCelsius
             ? temperature.value.toCelsius()
             : temperature.value.toFahrenheit();
+        final maxTempValue = units.isCelsius
+            ? maxTemp.value.toCelsius()
+            : minTemp.value.toFahrenheit();
+        final minTempValue = units.isCelsius
+            ? maxTemp.value.toCelsius()
+            : minTemp.value.toFahrenheit();
 
         weatherList.add(Weather(
             condition: item.condition,
@@ -126,8 +147,8 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
             lastUpdated: DateTime.now(),
             airPressure: item.airPressure,
             humidity: item.humidity,
-            maxTemp: item.maxTemp,
-            minTemp: item.minTemp,
+            maxTemp: Temperature(value: maxTempValue),
+            minTemp: Temperature(value: minTempValue),
             weatherStateAbr: item.weatherStateAbr,
             windDirection: item.windDirection,
             date: item.date,
