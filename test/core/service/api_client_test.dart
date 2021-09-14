@@ -36,7 +36,7 @@ void main() {
           await apiClient.locationSearch(query);
         } catch (_) {}
         verify(
-          () => dio.get('www.metaweather.com/api/location/search',
+          () => dio.get('https://www.metaweather.com/api/location/search',
               queryParameters: <String, String>{'query': query}),
         ).called(1);
       });

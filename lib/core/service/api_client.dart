@@ -19,7 +19,7 @@ class WeatherNotFoundFailure implements Exception {}
 
 class APIClient {
   final Dio _dio;
-  static const _baseUrl = 'www.metaweather.com';
+  static const _baseUrl = 'https://www.metaweather.com';
   APIClient({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: _baseUrl));
 
   /// Finds a [Location] `/api/location/search/?query=(query)`.
@@ -29,9 +29,7 @@ class APIClient {
     try {
       final response = await _dio.get(url, queryParameters: queryParamater);
 
-      final locationJson = jsonDecode(
-        response.data,
-      ) as List;
+      final locationJson = response.data as List;
 
       if (locationJson.isEmpty) {
         throw LocationNotFoundFailure();
@@ -49,7 +47,7 @@ class APIClient {
     try {
       final response = await _dio.get(url);
 
-      final bodyJson = jsonDecode(response.data) as Map<String, dynamic>;
+      final bodyJson = response.data as Map<String, dynamic>;
 
       if (bodyJson.isEmpty) {
         throw WeatherNotFoundFailure();

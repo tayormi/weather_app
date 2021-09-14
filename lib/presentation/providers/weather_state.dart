@@ -1,8 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:weather_app/presentation/models/weather.dart';
-
-part 'weather_state.g.dart';
 
 enum WeatherStatus { initial, loading, success, failure }
 
@@ -13,16 +10,12 @@ extension WeatherStatusX on WeatherStatus {
   bool get isFailure => this == WeatherStatus.failure;
 }
 
-@JsonSerializable()
 class WeatherState extends Equatable {
   WeatherState({
     this.status = WeatherStatus.initial,
     this.temperatureUnits = TemperatureUnits.celsius,
     Weather? weather,
   }) : weather = weather ?? Weather.empty;
-
-  factory WeatherState.fromJson(Map<String, dynamic> json) =>
-      _$WeatherStateFromJson(json);
 
   final WeatherStatus status;
   final Weather weather;
@@ -39,8 +32,6 @@ class WeatherState extends Equatable {
       weather: weather ?? this.weather,
     );
   }
-
-  Map<String, dynamic> toJson() => _$WeatherStateToJson(this);
 
   @override
   List<Object?> get props => [status, temperatureUnits, weather];

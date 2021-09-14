@@ -33,8 +33,9 @@ dependencies:
   flex_color_scheme: ^3.0.1
   flutter:
     sdk: flutter
+  flutter_hooks: ^0.18.0
   flutter_svg: ^0.22.0
-  hooks_riverpod: ^0.14.0+4
+  hooks_riverpod: ^1.0.0-dev.7
   json_annotation: ^4.0.0
 
 dev_dependencies:

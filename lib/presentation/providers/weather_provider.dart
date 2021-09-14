@@ -21,7 +21,7 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
   Future<void> fetchWeather(String? city) async {
     if (city == null || city.isEmpty) return;
 
-    state.copyWith(status: WeatherStatus.loading);
+    state = state.copyWith(status: WeatherStatus.loading);
 
     try {
       final weather = Weather.fromRepository(
@@ -32,13 +32,13 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
           ? weather.temperature.value.toFahrenheit()
           : weather.temperature.value;
 
-      state.copyWith(
+      state = state.copyWith(
         status: WeatherStatus.success,
         temperatureUnits: units,
         weather: weather.copyWith(temperature: Temperature(value: value)),
       );
     } on Exception {
-      state.copyWith(status: WeatherStatus.failure);
+      state = state.copyWith(status: WeatherStatus.failure);
     }
   }
 
@@ -54,7 +54,7 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
           ? weather.temperature.value.toFahrenheit()
           : weather.temperature.value;
 
-      state.copyWith(
+      state = state.copyWith(
         status: WeatherStatus.success,
         temperatureUnits: units,
         weather: weather.copyWith(temperature: Temperature(value: value)),
@@ -70,7 +70,7 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
         : TemperatureUnits.fahrenheit;
 
     if (!state.status.isSuccess) {
-      state.copyWith(temperatureUnits: units);
+      state = state.copyWith(temperatureUnits: units);
       return;
     }
 
@@ -81,7 +81,7 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
           ? temperature.value.toCelsius()
           : temperature.value.toFahrenheit();
 
-      state.copyWith(
+      state = state.copyWith(
         temperatureUnits: units,
         weather: weather.copyWith(temperature: Temperature(value: value)),
       );

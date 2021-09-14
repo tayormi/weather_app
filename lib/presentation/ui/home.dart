@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:weather_app/presentation/city_search.dart';
 import 'package:weather_app/presentation/providers/weather_provider.dart';
 import 'package:weather_app/presentation/providers/weather_state.dart';
 
@@ -8,11 +9,11 @@ import 'widgets/weather_empty.dart';
 import 'widgets/weather_error.dart';
 import 'widgets/weather_loading.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends HookConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -28,10 +29,19 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.search),
+          onPressed: () async {
+            final city = await Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const CitySearchScreen()));
+            print(city);
+            ref.read(weatherNotifierProvider.notifier).fetchWeather(city);
+          },
+        ),
         body: Center(
           child:
               Consumer(builder: (BuildContext context, watch, Widget? child) {
-            final state = watch(weatherNotifierProvider);
+            final state = ref.watch(weatherNotifierProvider);
             switch (state.status) {
               case WeatherStatus.initial:
                 return const WeatherEmpty();
