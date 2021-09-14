@@ -14,7 +14,7 @@ final weatherNotifierProvider =
 );
 
 class WeatherNotifier extends StateNotifier<WeatherState> {
-  WeatherNotifier(this._weatherRepository) : super(WeatherState());
+  WeatherNotifier(this._weatherRepository) : super(WeatherState.initial());
 
   final WeatherRepository _weatherRepository;
 
@@ -24,41 +24,77 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
     state = state.copyWith(status: WeatherStatus.loading);
 
     try {
-      final weather = Weather.fromRepository(
-        await _weatherRepository.getWeather(city),
-      );
+      final weatherList = <Weather>[];
+      final weather = await _weatherRepository.getWeather(city);
+
       final units = state.temperatureUnits;
-      final value = units.isFahrenheit
-          ? weather.temperature.value.toFahrenheit()
-          : weather.temperature.value;
+
+      for (var item in weather) {
+        final value = units.isFahrenheit
+            ? item.temperature.toFahrenheit()
+            : item.temperature;
+        weatherList.add(Weather(
+            condition: item.condition,
+            location: item.location,
+            temperature: Temperature(value: value),
+            lastUpdated: DateTime.now(),
+            airPressure: item.airPressure,
+            humidity: item.humidity,
+            maxTemp: item.maxTemp,
+            minTemp: item.minTemp,
+            weatherStateAbr: item.weatherStateAbr,
+            windDirection: item.windDirection,
+            date: item.applicableDate,
+            windSpeed: item.windSpeed));
+      }
 
       state = state.copyWith(
-        status: WeatherStatus.success,
-        temperatureUnits: units,
-        weather: weather.copyWith(temperature: Temperature(value: value)),
-      );
+          weatherDetails: weatherList.first,
+          status: WeatherStatus.success,
+          temperatureUnits: units,
+          weathers: weatherList);
     } on Exception {
       state = state.copyWith(status: WeatherStatus.failure);
     }
   }
 
+  void setWeatherDetails(Weather weather) {
+    state = state.copyWith(weatherDetails: weather);
+  }
+
   Future<void> refreshWeather() async {
+    final weatherList = <Weather>[];
     if (!state.status.isSuccess) return;
-    if (state.weather == Weather.empty) return;
+    if (state.weathers.isEmpty) return;
     try {
-      final weather = Weather.fromRepository(
-        await _weatherRepository.getWeather(state.weather.location),
-      );
+      final weather =
+          await _weatherRepository.getWeather(state.weathers[0].location);
       final units = state.temperatureUnits;
-      final value = units.isFahrenheit
-          ? weather.temperature.value.toFahrenheit()
-          : weather.temperature.value;
+
+      for (var item in weather) {
+        final value = units.isFahrenheit
+            ? item.temperature.toFahrenheit()
+            : item.temperature;
+        weatherList.add(Weather(
+            condition: item.condition,
+            location: item.location,
+            temperature: Temperature(value: value),
+            lastUpdated: DateTime.now(),
+            airPressure: item.airPressure,
+            humidity: item.humidity,
+            maxTemp: item.maxTemp,
+            minTemp: item.minTemp,
+            weatherStateAbr: item.weatherStateAbr,
+            windDirection: item.windDirection,
+            date: item.applicableDate,
+            windSpeed: item.windSpeed));
+      }
 
       state = state.copyWith(
-        status: WeatherStatus.success,
-        temperatureUnits: units,
-        weather: weather.copyWith(temperature: Temperature(value: value)),
-      );
+          weatherDetails: weatherList.first,
+          status: WeatherStatus.success,
+          temperatureUnits: units,
+          weathers: weatherList);
     } on Exception {
       state = state;
     }
@@ -74,17 +110,34 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
       return;
     }
 
-    final weather = state.weather;
-    if (weather != Weather.empty) {
-      final temperature = weather.temperature;
-      final value = units.isCelsius
-          ? temperature.value.toCelsius()
-          : temperature.value.toFahrenheit();
+    final weather = state.weathers;
+    final weatherList = <Weather>[];
+    if (weather.isNotEmpty) {
+      for (var item in weather) {
+        final temperature = item.temperature;
+        final value = units.isCelsius
+            ? temperature.value.toCelsius()
+            : temperature.value.toFahrenheit();
+
+        weatherList.add(Weather(
+            condition: item.condition,
+            location: item.location,
+            temperature: Temperature(value: value),
+            lastUpdated: DateTime.now(),
+            airPressure: item.airPressure,
+            humidity: item.humidity,
+            maxTemp: item.maxTemp,
+            minTemp: item.minTemp,
+            weatherStateAbr: item.weatherStateAbr,
+            windDirection: item.windDirection,
+            date: item.date,
+            windSpeed: item.windSpeed));
+      }
 
       state = state.copyWith(
-        temperatureUnits: units,
-        weather: weather.copyWith(temperature: Temperature(value: value)),
-      );
+          temperatureUnits: units,
+          weathers: weatherList,
+          weatherDetails: weatherList.first);
     }
   }
 }

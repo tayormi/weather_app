@@ -42,7 +42,7 @@ class APIClient {
   }
 
   /// Fetches [Weather] for a given [locationId].
-  Future<Weather> getWeather(int locationId) async {
+  Future<List<Weather>> getWeather(int locationId) async {
     final url = '/api/location/$locationId';
     try {
       final response = await _dio.get(url);
@@ -55,10 +55,13 @@ class APIClient {
 
       final weatherJson = bodyJson['consolidated_weather'] as List;
 
+      print(weatherJson);
+
       if (weatherJson.isEmpty) {
         throw WeatherNotFoundFailure();
       }
-      return Weather.fromJson(weatherJson.first as Map<String, dynamic>);
+      return List<Weather>.from(weatherJson.map((x) => Weather.fromJson(x)));
+      // return Weather.fromJson(weatherJson.first as Map<String, dynamic>);
     } catch (e) {
       throw WeatherRequestFailure();
     }

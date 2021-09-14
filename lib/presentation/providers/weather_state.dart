@@ -11,28 +11,49 @@ extension WeatherStatusX on WeatherStatus {
 }
 
 class WeatherState extends Equatable {
-  WeatherState({
-    this.status = WeatherStatus.initial,
-    this.temperatureUnits = TemperatureUnits.celsius,
-    Weather? weather,
-  }) : weather = weather ?? Weather.empty;
+  const WeatherState(
+      {this.status = WeatherStatus.initial,
+      this.temperatureUnits = TemperatureUnits.celsius,
+      required this.weathers,
+      required this.weatherDetails});
+
+  factory WeatherState.initial() {
+    return WeatherState(
+        weathers: const [],
+        weatherDetails: Weather(
+            airPressure: 0,
+            condition: 'unknown',
+            date: DateTime.now(),
+            humidity: 0,
+            lastUpdated: DateTime.now(),
+            location: '',
+            maxTemp: 0,
+            minTemp: 0,
+            temperature: const Temperature(value: 0),
+            windDirection: 0,
+            weatherStateAbr: '',
+            windSpeed: 0));
+  }
 
   final WeatherStatus status;
-  final Weather weather;
+  final List<Weather> weathers;
+  final Weather weatherDetails;
   final TemperatureUnits temperatureUnits;
 
-  WeatherState copyWith({
-    WeatherStatus? status,
-    TemperatureUnits? temperatureUnits,
-    Weather? weather,
-  }) {
+  WeatherState copyWith(
+      {WeatherStatus? status,
+      TemperatureUnits? temperatureUnits,
+      List<Weather>? weathers,
+      final Weather? weatherDetails}) {
     return WeatherState(
       status: status ?? this.status,
       temperatureUnits: temperatureUnits ?? this.temperatureUnits,
-      weather: weather ?? this.weather,
+      weathers: weathers ?? this.weathers,
+      weatherDetails: weatherDetails ?? this.weatherDetails,
     );
   }
 
   @override
-  List<Object?> get props => [status, temperatureUnits, weather];
+  List<Object?> get props =>
+      [status, temperatureUnits, weathers, weatherDetails];
 }

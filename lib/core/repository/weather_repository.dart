@@ -11,15 +11,26 @@ class WeatherRepository {
 
   final APIClient _apiClient;
 
-  Future<Weather> getWeather(String city) async {
+  Future<List<Weather>> getWeather(String city) async {
+    final List<Weather> weather = [];
     final location = await _apiClient.locationSearch(city);
     final woeid = location.woeid;
-    final weather = await _apiClient.getWeather(woeid);
-    return Weather(
-      temperature: weather.theTemp,
-      location: location.title,
-      condition: weather.weatherStateAbbr.toCondition,
-    );
+    final weathers = await _apiClient.getWeather(woeid);
+    for (var item in weathers) {
+      weather.add(Weather(
+          temperature: item.theTemp,
+          location: location.title,
+          condition: item.weatherStateName,
+          airPressure: item.airPressure,
+          humidity: item.humidity,
+          maxTemp: item.maxTemp,
+          minTemp: item.minTemp,
+          weatherStateAbr: item.weatherStateAbbr.abbr!,
+          windDirection: item.windDirection,
+          windSpeed: item.windSpeed,
+          applicableDate: item.applicableDate));
+    }
+    return weather;
   }
 }
 

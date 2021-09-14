@@ -30,53 +30,89 @@ class Temperature extends Equatable {
 
 @JsonSerializable()
 class Weather extends Equatable {
-  const Weather({
-    required this.condition,
-    required this.lastUpdated,
-    required this.location,
-    required this.temperature,
-  });
+  const Weather(
+      {required this.condition,
+      required this.lastUpdated,
+      required this.location,
+      required this.temperature,
+      required this.weatherStateAbr,
+      required this.minTemp,
+      required this.maxTemp,
+      required this.windSpeed,
+      required this.windDirection,
+      required this.humidity,
+      required this.airPressure,
+      required this.date});
 
   factory Weather.fromJson(Map<String, dynamic> json) =>
       _$WeatherFromJson(json);
 
-  factory Weather.fromRepository(weather_repository.Weather weather) {
-    return Weather(
-      condition: weather.condition,
-      lastUpdated: DateTime.now(),
-      location: weather.location,
-      temperature: Temperature(value: weather.temperature),
-    );
-  }
+  // factory Weather.fromRepository(weather_repository.Weather weather) {
+  //   return Weather(
+  //     condition: weather.condition,
+  //     lastUpdated: DateTime.now(),
+  //     location: weather.location,
+  //     temperature: Temperature(value: weather.temperature),
+  //   );
+  // }
 
   static final empty = Weather(
-    condition: WeatherCondition.unknown,
-    lastUpdated: DateTime(0),
-    temperature: const Temperature(value: 0),
-    location: '--',
-  );
+      condition: 'unknown',
+      lastUpdated: DateTime(0),
+      temperature: const Temperature(value: 0),
+      location: '--',
+      airPressure: 0,
+      humidity: 0,
+      maxTemp: 0,
+      minTemp: 0,
+      weatherStateAbr: '',
+      windDirection: 0,
+      windSpeed: 0,
+      date: DateTime.now());
 
-  final WeatherCondition condition;
+  final String condition;
   final DateTime lastUpdated;
   final String location;
   final Temperature temperature;
+  final String weatherStateAbr;
+  final double minTemp;
+  final double maxTemp;
+  final double windSpeed;
+  final double windDirection;
+  final int humidity;
+  final double airPressure;
+  final DateTime date;
 
   @override
   List<Object> get props => [condition, lastUpdated, location, temperature];
 
   Map<String, dynamic> toJson() => _$WeatherToJson(this);
 
-  Weather copyWith({
-    WeatherCondition? condition,
-    DateTime? lastUpdated,
-    String? location,
-    Temperature? temperature,
-  }) {
+  Weather copyWith(
+      {String? condition,
+      DateTime? lastUpdated,
+      String? location,
+      Temperature? temperature,
+      String? weatherStateAbr,
+      double? minTemp,
+      double? maxTemp,
+      double? windSpeed,
+      double? windDirection,
+      int? humidity,
+      double? airPressure,
+      DateTime? date}) {
     return Weather(
-      condition: condition ?? this.condition,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
-      location: location ?? this.location,
-      temperature: temperature ?? this.temperature,
-    );
+        condition: condition ?? this.condition,
+        lastUpdated: lastUpdated ?? this.lastUpdated,
+        location: location ?? this.location,
+        temperature: temperature ?? this.temperature,
+        airPressure: airPressure ?? this.airPressure,
+        humidity: humidity ?? this.humidity,
+        maxTemp: maxTemp ?? this.maxTemp,
+        minTemp: minTemp ?? this.minTemp,
+        weatherStateAbr: weatherStateAbr ?? this.weatherStateAbr,
+        windDirection: windDirection ?? this.windDirection,
+        windSpeed: windSpeed ?? this.windSpeed,
+        date: date ?? this.date);
   }
 }
