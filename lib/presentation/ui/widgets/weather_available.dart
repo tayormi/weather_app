@@ -21,7 +21,6 @@ class WeatherAvailable extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     return Stack(
       children: [
         _WeatherBackground(),
@@ -31,109 +30,251 @@ class WeatherAvailable extends HookConsumerWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      DateFormat(DateFormat.WEEKDAY)
-                          .format(weatherDetails.date)
-                          .toUpperCase(),
-                      style: theme.textTheme.headline2?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    weatherDetails.condition.toString(),
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SvgPicture.network(
-                      'https://www.metaweather.com/static/img/weather/${weatherDetails.weatherStateAbr}.svg',
-                      height: 100,
-                      width: 100,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      weatherDetails.formattedTemperature(units),
-                      style: theme.textTheme.headline2?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 80,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Humidity: ${weatherDetails.humidity}%',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Pressure: ${weatherDetails.airPressure} hPa',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Wind: ${weatherDetails.windSpeed.toStringAsPrecision(2)} km/h',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 140,
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        return WeatherItem(
-                          weather: weather[index],
-                          onTap: () async {
-                            ref
-                                .read(weatherNotifierProvider.notifier)
-                                .setWeatherDetails(weather[index]);
-                          },
-                          units: units,
-                        );
-                      },
-                      itemCount: weather.length,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(
-                          width: 10,
-                        );
-                      },
-                    ),
-                  )
-                ],
+              child: OrientationBuilder(
+                builder: (context, orientation) =>
+                    orientation == Orientation.portrait
+                        ? PortraitView(
+                            units: units,
+                            weather: weather,
+                            weatherDetails: weatherDetails,
+                          )
+                        : LandScapeView(
+                            units: units,
+                            weather: weather,
+                            weatherDetails: weatherDetails,
+                          ),
               ),
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class LandScapeView extends HookConsumerWidget {
+  const LandScapeView(
+      {Key? key,
+      required this.weather,
+      required this.weatherDetails,
+      required this.units})
+      : super(key: key);
+
+  final List<Weather> weather;
+  final Weather weatherDetails;
+  final TemperatureUnits units;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            DateFormat(DateFormat.WEEKDAY)
+                .format(weatherDetails.date)
+                .toUpperCase(),
+            style: theme.textTheme.headline2?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Text(
+          weatherDetails.condition.toString(),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: SvgPicture.network(
+            'https://www.metaweather.com/static/img/weather/${weatherDetails.weatherStateAbr}.svg',
+            height: 100,
+            width: 100,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            weatherDetails.formattedTemperature(units),
+            style: theme.textTheme.headline2?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 80,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Humidity: ${weatherDetails.humidity}%',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Pressure: ${weatherDetails.airPressure} hPa',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Wind: ${weatherDetails.windSpeed.toStringAsPrecision(2)} km/h',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          height: 140,
+          child: ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return WeatherItem(
+                weather: weather[index],
+                onTap: () async {
+                  ref
+                      .read(weatherNotifierProvider.notifier)
+                      .setWeatherDetails(weather[index]);
+                },
+                units: units,
+              );
+            },
+            itemCount: weather.length,
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(
+                width: 10,
+              );
+            },
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class PortraitView extends HookConsumerWidget {
+  const PortraitView(
+      {Key? key,
+      required this.weather,
+      required this.weatherDetails,
+      required this.units})
+      : super(key: key);
+
+  final List<Weather> weather;
+  final Weather weatherDetails;
+  final TemperatureUnits units;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            DateFormat(DateFormat.WEEKDAY)
+                .format(weatherDetails.date)
+                .toUpperCase(),
+            style: theme.textTheme.headline2?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Text(
+          weatherDetails.condition.toString(),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: SvgPicture.network(
+            'https://www.metaweather.com/static/img/weather/${weatherDetails.weatherStateAbr}.svg',
+            height: 100,
+            width: 100,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            weatherDetails.formattedTemperature(units),
+            style: theme.textTheme.headline2?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 80,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Humidity: ${weatherDetails.humidity}%',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Pressure: ${weatherDetails.airPressure} hPa',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Wind: ${weatherDetails.windSpeed.toStringAsPrecision(2)} km/h',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          height: 140,
+          child: ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return WeatherItem(
+                weather: weather[index],
+                onTap: () async {
+                  ref
+                      .read(weatherNotifierProvider.notifier)
+                      .setWeatherDetails(weather[index]);
+                },
+                units: units,
+              );
+            },
+            itemCount: weather.length,
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(
+                width: 10,
+              );
+            },
+          ),
+        )
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/presentation/city_search.dart';
 import 'package:weather_app/presentation/providers/weather_provider.dart';
@@ -18,6 +19,24 @@ class HomeScreen extends HookConsumerWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          leading: InkWell(
+              onTap: () async {
+                final isPortrait =
+                    MediaQuery.of(context).orientation == Orientation.portrait;
+
+                if (isPortrait) {
+                  await SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                  ]);
+                } else {
+                  await SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight,
+                  ]);
+                }
+              },
+              child: Icon(Icons.add)),
           title: const Text('Weather'),
           actions: [
             Padding(
