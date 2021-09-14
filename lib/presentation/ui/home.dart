@@ -19,24 +19,6 @@ class HomeScreen extends HookConsumerWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          leading: InkWell(
-              onTap: () async {
-                final isPortrait =
-                    MediaQuery.of(context).orientation == Orientation.portrait;
-
-                if (isPortrait) {
-                  await SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.portraitUp,
-                    DeviceOrientation.portraitDown,
-                  ]);
-                } else {
-                  await SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.landscapeLeft,
-                    DeviceOrientation.landscapeRight,
-                  ]);
-                }
-              },
-              child: Icon(Icons.add)),
           title: const Text('Weather'),
           actions: [
             Padding(
