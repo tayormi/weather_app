@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class WeatherError extends StatelessWidget {
-  const WeatherError({Key? key}) : super(key: key);
+  const WeatherError({Key? key, required this.onPressed}) : super(key: key);
+
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,7 @@ class WeatherError extends StatelessWidget {
           'Something went wrong!',
           style: theme.textTheme.headline5,
         ),
+        ElevatedButton(onPressed: onPressed, child: const Text('Retry'))
       ],
     );
   }

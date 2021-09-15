@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weather_app/presentation/city_search.dart';
 import 'package:weather_app/presentation/providers/weather_provider.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final xCity = useState('');
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -35,6 +37,7 @@ class HomeScreen extends HookConsumerWidget {
                     final city = await Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (_) => const CitySearchScreen()));
+                    xCity.value = city;
                     ref
                         .read(weatherNotifierProvider.notifier)
                         .fetchWeather(city);
@@ -48,6 +51,7 @@ class HomeScreen extends HookConsumerWidget {
           onPressed: () async {
             final city = await Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const CitySearchScreen()));
+            xCity.value = city;
             ref.read(weatherNotifierProvider.notifier).fetchWeather(city);
           },
         ),
@@ -73,7 +77,13 @@ class HomeScreen extends HookConsumerWidget {
                 );
               case WeatherStatus.failure:
               default:
-                return const WeatherError();
+                return WeatherError(
+                  onPressed: () {
+                    ref
+                        .read(weatherNotifierProvider.notifier)
+                        .fetchWeather(xCity.value);
+                  },
+                );
             }
           }),
         ));
