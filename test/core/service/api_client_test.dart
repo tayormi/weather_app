@@ -58,7 +58,7 @@ void main() {
         when(() => dio.get(any())).thenAnswer((_) async => response);
         await expectLater(
           apiClient.locationSearch(query),
-          throwsA(isA<LocationNotFoundFailure>()),
+          throwsA(isA<LocationIdRequestFailure>()),
         );
       });
 
