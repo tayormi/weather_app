@@ -42,6 +42,7 @@ This project was created for educational purposes only and it's not intended to 
 |:------:|:-------:|
 |[**riverpod**](https://pub.dev/packages/riverpod)| State Management|
 |[**DIO**](https://pub.dev/packages/dio)| Network calls|
+|[**FlexColorScheme**](https://pub.dev/packages/flex_color_scheme)| App Theming|
 |[**Flutter Hooks**](https://pub.dev/packages/flutter_hooks)| A Flutter implementation of React hooks|
 
 ## 🤓 Author(s)
