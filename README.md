@@ -1,16 +1,56 @@
-# weather_app
+# 📈Weather App built with Riverpod
 
-A new Flutter project.
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Twitter Follow](https://img.shields.io/twitter/follow/olu_tayormi?label=Follow&style=social)](https://twitter.com/olu_tayormi)
 
-## Getting Started
+This is a weather app built using Riverpod as it's State Management. This project is an attempt to rewrite the Weather App sample at [Flutter Bloc Example](https://bloclibrary.dev/#/flutterweathertutorial) created by [Felix Angelov](https://github.com/felangel) in Riverpod.
 
-This project is a starting point for a Flutter application.
+The [Meta Weather API](https://www.metaweather.com) was used to provide the data.
+This project was created for educational purposes only and it's not intended to be a reference point to get weather data.
 
-A few resources to get you started if this is your first Flutter project:
+## 💻 Requirements
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+* Any Operating System (i.e MacOS X, Linux, Windows)
+* Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
+* A little knowledge of Dart and Flutter
+* A brain to think 🤓🤓
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ✨ Features
+
+* [x] See weather forecast for a location.
+* [x] See next 5 days of forecast.
+* [x] Change temperature.
+
+## 📸 Screenshots
+
+<div style="background-color:rgb(169,169,169); text-align:center">
+<img src="screenshots/ss1.png" width="300" style="border-radius: 15px">
+&nbsp;
+<img src="screenshots/ss2.png" width="300" style="border-radius: 15px">
+</div>
+
+<div style="background-color:rgb(169,169,169); text-align:center">
+<img src="screenshots/ss3.png" width="300" style="border-radius: 15px">
+&nbsp;
+<img src="screenshots/ss4.png" width="300" style="border-radius: 15px">
+&nbsp;
+<img src="screenshots/ss5.png" width="300" style="border-radius: 15px">
+</div>
+
+## 🔌 Plugins
+
+| Name | Usage |
+|:------:|:-------:|
+|[**riverpod**](https://pub.dev/packages/riverpod)| State Management|
+|[**DIO**](https://pub.dev/packages/dio)| Network calls|
+|[**Flutter Hooks**](https://pub.dev/packages/flutter_hooks)| A Flutter implementation of React hooks|
+
+## 🤓 Author(s)
+
+**Ajiboye Temitope Oluwatayomi** [![Twitter Follow](https://img.shields.io/twitter/follow/olu_tayormi?label=Follow&style=social)](https://twitter.com/olu_tayormi)
+
+## 🔖 License
+
+[Apache-2.0](https://github.com/tayormi/covid_tracker/blob/master/LICENSE)
+
+***
+> Feel free to star ⭐ this repository if you like what you see 😉.
